@@ -1,9 +1,8 @@
 import React from "react";
 
 import logo from "./../../assets/investment-calculator-logo.png";
-import styles from "./InvestmentHeader.module.scss";
 
-const InvestmentHeader = () => {
+const InvestmentHeader = (props) => {
   return (
     <header className="header">
       <img src={logo} alt="logo" />

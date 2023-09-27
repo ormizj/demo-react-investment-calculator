@@ -2,10 +2,13 @@ import React from "react";
 
 import styles from "./InvestmentTable.module.scss";
 
-const InvestmentTable = () => {
+const InvestmentTable = (props) => {
+  if (props.investments.length === 0) {
+    return <div className={`result ${styles.empty}`}>No investments exist</div>;
+  }
+
   return (
     // {/* Todo: Show below table conditionally (only once result data is available) */}
-    // {/* Show fallback text if no data is available */}
 
     <table className="result">
       <thead>
@@ -19,11 +22,16 @@ const InvestmentTable = () => {
       </thead>
       <tbody>
         <tr>
-          <td>YEAR NUMBER</td>
-          <td>TOTAL SAVINGS END OF YEAR</td>
-          <td>INTEREST GAINED IN YEAR</td>
-          <td>TOTAL INTEREST GAINED</td>
-          <td>TOTAL INVESTED CAPITAL</td>
+          {/* <td>YEAR NUMBER</td> */}
+          <td></td>
+          {/* <td>TOTAL SAVINGS END OF YEAR</td> */}
+          <td></td>
+          {/* <td>INTEREST GAINED IN YEAR</td> */}
+          <td></td>
+          {/* <td>TOTAL INTEREST GAINED</td> */}
+          <td></td>
+          {/* <td>TOTAL INVESTED CAPITAL</td> */}
+          <td></td>
         </tr>
       </tbody>
     </table>
