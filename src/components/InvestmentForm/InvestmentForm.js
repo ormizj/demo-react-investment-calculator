@@ -23,6 +23,8 @@ const InvestmentForm = (props) => {
     e.preventDefault();
     const yearlyData = []; // per-year results
 
+    let totalInterestGained = 0;
+    let totalInvested = 0;
     let currentSavings = +currentSavingsInput;
     const yearlyContribution = +yearlyContributionInput;
     const expectedReturn = +expectedReturnInput / 100;
@@ -32,19 +34,20 @@ const InvestmentForm = (props) => {
     for (let i = 0; i < duration; i++) {
       const yearlyInterest = currentSavings * expectedReturn;
       currentSavings += yearlyInterest + yearlyContribution;
+      totalInvested += yearlyContribution;
+      totalInterestGained += yearlyInterest;
+
       yearlyData.push({
         year: i + 1,
-        yearlyInterest,
         savingsEndOfYear: currentSavings,
-        yearlyContribution,
+        yearlyInterest,
+        totalInterestGained,
+        totalInvested,
       });
     }
 
-    // do something with yearlyData ...
-
     // add investment and reset form
-    props.onAddInvestment();
-    resetFormHandler();
+    props.onSetInvestment(yearlyData);
   };
 
   const resetFormHandler = () => {
@@ -52,6 +55,7 @@ const InvestmentForm = (props) => {
     setYearlyContributionInput("");
     setExpectedReturnInput("");
     setDurationInput("");
+    props.onSetInvestment([]);
   };
 
   return (

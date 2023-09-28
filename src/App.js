@@ -7,14 +7,14 @@ import InvestmentTable from "components/InvestmentTable/InvestmentTable";
 function App() {
   const [investments, setInvestments] = useState([]);
 
-  const addInvestmentHandler = (investment) => {
-    setInvestments((prevInvestments) => [investment, ...prevInvestments]);
+  const setInvestmentHandler = (investments) => {
+    setInvestments(investments);
   };
 
   return (
     <div>
       <InvestmentHeader />
-      <InvestmentForm onAddInvestment={addInvestmentHandler} />
+      <InvestmentForm onSetInvestment={setInvestmentHandler} />
       <InvestmentTable investments={investments} />
     </div>
   );

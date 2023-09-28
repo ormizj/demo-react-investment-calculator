@@ -1,15 +1,18 @@
 import React from "react";
 
 import styles from "./InvestmentTable.module.scss";
+import Investment from "./Investment";
 
 const InvestmentTable = (props) => {
-  if (props.investments.length === 0) {
-    return <div className={`result ${styles.empty}`}>No investments exist</div>;
+  const investments = props.investments;
+
+  if (investments.length === 0) {
+    return (
+      <div className={`result ${styles.empty}`}>Waiting for calculation...</div>
+    );
   }
 
   return (
-    // {/* Todo: Show below table conditionally (only once result data is available) */}
-
     <table className="result">
       <thead>
         <tr>
@@ -21,18 +24,9 @@ const InvestmentTable = (props) => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          {/* <td>YEAR NUMBER</td> */}
-          <td></td>
-          {/* <td>TOTAL SAVINGS END OF YEAR</td> */}
-          <td></td>
-          {/* <td>INTEREST GAINED IN YEAR</td> */}
-          <td></td>
-          {/* <td>TOTAL INTEREST GAINED</td> */}
-          <td></td>
-          {/* <td>TOTAL INVESTED CAPITAL</td> */}
-          <td></td>
-        </tr>
+        {investments.map((invesetment) => (
+          <Investment key={invesetment.year} investment={invesetment} />
+        ))}
       </tbody>
     </table>
   );
