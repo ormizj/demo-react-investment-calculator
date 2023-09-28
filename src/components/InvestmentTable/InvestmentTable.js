@@ -8,7 +8,7 @@ const InvestmentTable = (props) => {
 
   if (investments.length === 0) {
     return (
-      <div className={`result ${styles.empty}`}>Waiting for calculation...</div>
+      <p className={`result ${styles.empty}`}>Waiting for calculation...</p>
     );
   }
 

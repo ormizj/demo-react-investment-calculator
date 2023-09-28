@@ -1,59 +1,32 @@
 import React, { useState } from "react";
 import styles from "./InvestmentForm.module.scss";
 
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
+const initialUserInput = {
+  "current-savings": "",
+  "yearly-contribution": "",
+  "expected-return": "",
+  duration: "",
+};
 
 const InvestmentForm = (props) => {
-  const [currentSavingsInput, setCurrentSavingsInput] = useState("");
-  const [yearlyContributionInput, setYearlyContributionInput] = useState("");
-  const [expectedReturnInput, setExpectedReturnInput] = useState("");
-  const [durationInput, setDurationInput] = useState("");
+  const [userInputs, setUserInputs] = useState(initialUserInput);
 
-  const inputHandler = (e, setCb) => {
-    setCb(e.target.value);
+  const inputChangeHandler = (input, value) => {
+    setUserInputs((prevInput) => {
+      return {
+        ...prevInput,
+        [input]: value,
+      };
+    });
   };
 
-  const calculateHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    const yearlyData = []; // per-year results
-
-    let totalInterestGained = 0;
-    let totalInvested = 0;
-    let currentSavings = +currentSavingsInput;
-    const yearlyContribution = +yearlyContributionInput;
-    const expectedReturn = +expectedReturnInput / 100;
-    const duration = +durationInput;
-
-    // The below code calculates yearly results (total savings, interest etc)
-    for (let i = 0; i < duration; i++) {
-      const yearlyInterest = currentSavings * expectedReturn;
-      currentSavings += yearlyInterest + yearlyContribution;
-      totalInvested += yearlyContribution;
-      totalInterestGained += yearlyInterest;
-
-      yearlyData.push({
-        year: i + 1,
-        savingsEndOfYear: formatter.format(currentSavings),
-        yearlyInterest: formatter.format(yearlyInterest),
-        totalInterestGained: formatter.format(totalInterestGained),
-        totalInvested: formatter.format(totalInvested),
-      });
-    }
-
-    // add investment and reset form
-    props.onSetInvestment(yearlyData);
+    props.onCalculate(userInputs);
   };
 
-  const resetFormHandler = () => {
-    setCurrentSavingsInput("");
-    setYearlyContributionInput("");
-    setExpectedReturnInput("");
-    setDurationInput("");
+  const resetHandler = () => {
+    setUserInputs(initialUserInput);
     props.onSetInvestment([]);
   };
 
@@ -61,15 +34,17 @@ const InvestmentForm = (props) => {
     <div>
       <form
         className={styles.form}
-        onSubmit={calculateHandler}
-        onReset={resetFormHandler}
+        onSubmit={submitHandler}
+        onReset={resetHandler}
       >
         <div className={styles["input-group"]}>
           <p>
             <label htmlFor="current-savings">Current Savings ($)</label>
             <input
-              value={currentSavingsInput}
-              onChange={(e) => inputHandler(e, setCurrentSavingsInput)}
+              value={userInputs["current-savings"]}
+              onChange={(e) =>
+                inputChangeHandler("current-savings", e.target.value)
+              }
               type="number"
               id="current-savings"
             />
@@ -77,8 +52,10 @@ const InvestmentForm = (props) => {
           <p>
             <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
             <input
-              value={yearlyContributionInput}
-              onChange={(e) => inputHandler(e, setYearlyContributionInput)}
+              value={userInputs["yearly-contribution"]}
+              onChange={(e) =>
+                inputChangeHandler("yearly-contribution", e.target.value)
+              }
               type="number"
               id="yearly-contribution"
             />
@@ -90,8 +67,10 @@ const InvestmentForm = (props) => {
               Expected Interest (%, per year)
             </label>
             <input
-              value={expectedReturnInput}
-              onChange={(e) => inputHandler(e, setExpectedReturnInput)}
+              value={userInputs["expected-return"]}
+              onChange={(e) =>
+                inputChangeHandler("expected-return", e.target.value)
+              }
               type="number"
               id="expected-return"
             />
@@ -99,8 +78,8 @@ const InvestmentForm = (props) => {
           <p>
             <label htmlFor="duration">Investment Duration (years)</label>
             <input
-              value={durationInput}
-              onChange={(e) => inputHandler(e, setDurationInput)}
+              value={userInputs["duration"]}
+              onChange={(e) => inputChangeHandler("duration", e.target.value)}
               type="number"
               id="duration"
             />
