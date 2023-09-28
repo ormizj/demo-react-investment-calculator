@@ -13,7 +13,7 @@ const InvestmentTable = (props) => {
   }
 
   return (
-    <table className="result">
+    <table className={styles.result}>
       <thead>
         <tr>
           <th>Year</th>

@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import styles from "./InvestmentForm.module.scss";
+
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 const InvestmentForm = (props) => {
   const [currentSavingsInput, setCurrentSavingsInput] = useState("");
@@ -6,17 +14,8 @@ const InvestmentForm = (props) => {
   const [expectedReturnInput, setExpectedReturnInput] = useState("");
   const [durationInput, setDurationInput] = useState("");
 
-  const currentSavingsInputHandler = (e) => {
-    setCurrentSavingsInput(e.target.value);
-  };
-  const yearlyContributionInputHandler = (e) => {
-    setYearlyContributionInput(e.target.value);
-  };
-  const expectedReturnInputHandler = (e) => {
-    setExpectedReturnInput(e.target.value);
-  };
-  const durationInputHandler = (e) => {
-    setDurationInput(e.target.value);
+  const inputHandler = (e, setCb) => {
+    setCb(e.target.value);
   };
 
   const calculateHandler = (e) => {
@@ -39,10 +38,10 @@ const InvestmentForm = (props) => {
 
       yearlyData.push({
         year: i + 1,
-        savingsEndOfYear: currentSavings,
-        yearlyInterest,
-        totalInterestGained,
-        totalInvested,
+        savingsEndOfYear: formatter.format(currentSavings),
+        yearlyInterest: formatter.format(yearlyInterest),
+        totalInterestGained: formatter.format(totalInterestGained),
+        totalInvested: formatter.format(totalInvested),
       });
     }
 
@@ -61,16 +60,16 @@ const InvestmentForm = (props) => {
   return (
     <div>
       <form
-        className="form"
+        className={styles.form}
         onSubmit={calculateHandler}
         onReset={resetFormHandler}
       >
-        <div className="input-group">
+        <div className={styles["input-group"]}>
           <p>
             <label htmlFor="current-savings">Current Savings ($)</label>
             <input
               value={currentSavingsInput}
-              onChange={currentSavingsInputHandler}
+              onChange={(e) => inputHandler(e, setCurrentSavingsInput)}
               type="number"
               id="current-savings"
             />
@@ -79,20 +78,20 @@ const InvestmentForm = (props) => {
             <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
             <input
               value={yearlyContributionInput}
-              onChange={yearlyContributionInputHandler}
+              onChange={(e) => inputHandler(e, setYearlyContributionInput)}
               type="number"
               id="yearly-contribution"
             />
           </p>
         </div>
-        <div className="input-group">
+        <div className={styles["input-group"]}>
           <p>
             <label htmlFor="expected-return">
               Expected Interest (%, per year)
             </label>
             <input
               value={expectedReturnInput}
-              onChange={expectedReturnInputHandler}
+              onChange={(e) => inputHandler(e, setExpectedReturnInput)}
               type="number"
               id="expected-return"
             />
@@ -101,17 +100,17 @@ const InvestmentForm = (props) => {
             <label htmlFor="duration">Investment Duration (years)</label>
             <input
               value={durationInput}
-              onChange={durationInputHandler}
+              onChange={(e) => inputHandler(e, setDurationInput)}
               type="number"
               id="duration"
             />
           </p>
         </div>
-        <p className="actions">
-          <button type="reset" className="buttonAlt">
+        <p className={styles.actions}>
+          <button type="reset" className={styles.buttonAlt}>
             Reset
           </button>
-          <button type="submit" className="button">
+          <button type="submit" className={styles.button}>
             Calculate
           </button>
         </p>
