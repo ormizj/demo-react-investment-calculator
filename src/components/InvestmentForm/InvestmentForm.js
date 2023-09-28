@@ -12,12 +12,10 @@ const InvestmentForm = (props) => {
   const [userInputs, setUserInputs] = useState(initialUserInput);
 
   const inputChangeHandler = (input, value) => {
-    setUserInputs((prevInput) => {
-      return {
-        ...prevInput,
-        [input]: +value, // casting to number
-      };
-    });
+    setUserInputs((prevInput) => ({
+      ...prevInput,
+      [input]: +value, // casting to number
+    }));
   };
 
   const submitHandler = (e) => {
